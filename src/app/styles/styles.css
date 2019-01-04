@@ -1,0 +1,27 @@
+
+  .x-input {
+    border-width: 0;
+    font-size: 14px;
+    padding: 0 5px;
+    outline:0;
+    color: black;
+    font-weight: 300;
+  }
+
+  .x-input-highlight {
+    min-height: 30px;
+    border:1px solid #bbb;
+    border-width: 0 0 1px 0 !important;
+    border-radius: 0 !important;
+    outline: 0 !important;
+    box-shadow: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+    border-color: brown;
+  }
+
+  .trial {
+      display: flex;
+      justify-content: flex-start;
+      
+  }
