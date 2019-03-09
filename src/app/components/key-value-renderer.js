@@ -4,23 +4,19 @@ import React from 'react';
 class KeyValueRenderer extends React.Component {
     constructor(props) {
         super(props);
+     
         this.state = {
-            pairs: [{
-                name: '',
-                value: ''
-            }]
-        
-            };
+            pairs: [{'name':'','value': ''}]
+        };
+    
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidUpdate(prevProps) {
-        console.log("componentdidupdate")
-        if (this.props.requestObject.queryParams !== prevProps.requestObject.queryParams) {
-           this.setState({ pairs:this.props.requestObject.queryParams })
+        if (this.props.data!== prevProps.data) {
+           this.setState({ pairs:this.props.data})
         }
     }
     createUI(){
-        console.log("createUI")
         return this.state.pairs.map((el, i) => 
             <div key={i}>
                <input type="text" value={el.name||''} placeholder="name" onChange={this.handleNameChange.bind(this, i)}/>
@@ -33,12 +29,14 @@ class KeyValueRenderer extends React.Component {
          let pairs = [...this.state.pairs];
          pairs[i].name = event.target.value;
          this.setState({pairs});
-         console.log(this._reactInternalFiber.return.stateNode)
+         this.props.updateStore(pairs);
+         
      }
      handleValueChange = (i, event) => {
         let pairs = [...this.state.pairs];
         pairs[i].value = event.target.value;
         this.setState({ pairs });
+        this.props.updateStore(pairs);
      }
     
      addClick = () => {
@@ -49,6 +47,7 @@ class KeyValueRenderer extends React.Component {
         let pairs = [...this.state.pairs];
         pairs.splice(i,1);
         this.setState({ pairs });
+        this.props.updateStore(pairs);
     }
      handleSubmit(event) {
         event.preventDefault();

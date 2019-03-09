@@ -20,6 +20,14 @@ class UrlBar extends React.Component {
 	handleMethodChange = (value)=> {
 		this.props.handleMethodChange(value);
 	}
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.requestObject.url !== this.props.requestObject.url) {
+		  this.setInputValue(nextProps.requestObject.url)
+		}
+	}
+	setInputValue(val) {
+		this.refs.urlInput.value = val
+	}
 	render() {
 		const {
 			fetchData,
@@ -40,7 +48,7 @@ class UrlBar extends React.Component {
 									<MenuItem  key={method} onSelect ={this.handleMethodChange} eventKey={method}>{method}</MenuItem>
 								))}
 							</DropdownButton>
-							<FormControl type="text" onChange = {this.handleUrlChange} />
+							<FormControl type="text"  ref="urlInput" value={this.props.requestObject.url} onChange = {this.handleUrlChange} />
 						</InputGroup>
 					</Col>
 					<SendButton fetchData = {fetchData} />

@@ -15,9 +15,16 @@ class Wrapper extends React.Component {
             response: []
 		}
 	}
+	getHeaders = (headers) => {
+		let header = {};
+		headers.forEach(element => {
+			header[element.name] = element.value
+		});
+		return header;
+	}
 	getResponse = () => {
 		let body = `${JSON.stringify(this.props.requestObject.data)}`;
-		let headers = `${JSON.stringify(this.props.requestObject.headers)}`
+		let headers = this.getHeaders(this.props.requestObject.headers);
 		let config = {
 			url: `${this.props.requestObject.url}`,
 			method: `${this.props.requestObject.method}`,
@@ -42,15 +49,20 @@ class Wrapper extends React.Component {
 			let parsedUrl = url.parse(inputUrl)
 			let queryString = queryStringToJSON(parsedUrl)
 			this.props.updateQueryParams(queryString)
+		} else {
+			this.props.updateQueryParams([{
+				name:'',
+				value:''
+			}])
 		}
 		this.props.updateURL(inputUrl);
 	}
 	render() {
 		return (
-			<div className="Container">
-			    <UrlBar {...this.props} fetchData={this.getResponse} handleUrlChange={this.handleUrlChange} handleMethodChange={this.props.handleMethodChange}/>
-				<RequestPane {...this.props} />
-			    <ResponseView  response = {this.state.response}/>
+			<div className="Container main-container">
+			    <UrlBar className="flex-column" {...this.props} fetchData={this.getResponse} handleUrlChange={this.handleUrlChange} handleMethodChange={this.props.handleMethodChange}/>
+				<RequestPane className="flex-column" {...this.props} />
+			    <ResponseView className="flex-column" response = {this.state.response}/>
 			</div>
 		)
 	}

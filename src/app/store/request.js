@@ -3,10 +3,8 @@ import { createStore } from 'redux';
 const initialState = {
     request:{
         method: 'GET',
-        url: 'http://petstore.swagger.io/v2/pet',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        url: '',
+        headers: [],
         data: {
             "id": 0,
             "category": {
@@ -25,10 +23,7 @@ const initialState = {
             ],
             "status": "available"
         },
-        queryParams : [{
-            name:'',
-            value:''
-        }]
+        queryParams :  []
     }
 }
 
@@ -53,12 +48,21 @@ const reducer = (state = initialState, action) => {
                                                     method: action.text,
                                                 }})
         case 'UPDATE_QUERY_PARAM' :
-            console.log(action.pairs)
             return Object.assign({}, state, {
                 ...state,
                 request: {
                     ...state.request,
                     queryParams: action.pairs
+                } 
+            })
+        case 'UPDATE_HEADERS' :
+            console.log("reducer")
+            console.log(action.pairs)
+            return Object.assign({}, state, {
+                ...state,
+                request: {
+                    ...state.request,
+                    headers: action.pairs
                 } 
             })
         default :
