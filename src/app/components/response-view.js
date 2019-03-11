@@ -13,7 +13,7 @@ class ResponseView extends React.Component {
 			
 		return (
 			
-			<div>
+			<div className="flex-column flex-column-response-view">
 				<pre style ={responseViewStyle}>{JSON.stringify(response, null, 2)}</pre>
 			</div>
 		)

@@ -99,7 +99,7 @@ class RequestPane extends React.Component {
     }
     render() {
       return (
-        <div>
+        <div className="flex-column flex-column-request-view">
             <Tab.Container id="tabs-with-dropdown" defaultActiveKey="first">
                 <Row className="clearfix">
                     <Col sm={12}>
@@ -126,10 +126,10 @@ class RequestPane extends React.Component {
                         <Tab.Pane eventKey="MultipartForm">Multipart Form content</Tab.Pane>
                         <Tab.Pane eventKey="FormURLEncoded">Form URL Encoded content</Tab.Pane>
                         <Tab.Pane eventKey="JSON">
-                            <BodyEditor />
+                            <BodyEditor mode = {"javascript"} />
                         </Tab.Pane>
-                        <Tab.Pane eventKey="XML">
-                            <BodyEditor />
+                        <Tab.Pane eventKey="XML" >
+                            <BodyEditor mode = {"xml"} />
                         </Tab.Pane>
                     </Tab.Content>
                     </Col>

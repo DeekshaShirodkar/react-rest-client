@@ -35,25 +35,27 @@ class UrlBar extends React.Component {
 		} = this.props;
 
 		return (
-			<form>
-				<FormGroup>
-					<Col xs={9}>
-						<InputGroup>
-							<DropdownButton
-								componentClass={InputGroup.Button}
-								id="input-dropdown-addon"
-								title={requestObject.method}
-							>
-								{constants.HTTP_METHODS.map(method => (
-									<MenuItem  key={method} onSelect ={this.handleMethodChange} eventKey={method}>{method}</MenuItem>
-								))}
-							</DropdownButton>
-							<FormControl type="text"  ref="urlInput" value={this.props.requestObject.url} onChange = {this.handleUrlChange} />
-						</InputGroup>
-					</Col>
-					<SendButton fetchData = {fetchData} />
- 				 </FormGroup>
-			</form>
+			<div className="flex-column flex-column-url-bar">
+				<form>
+					<FormGroup>
+						<Col xs={9}>
+							<InputGroup>
+								<DropdownButton
+									componentClass={InputGroup.Button}
+									id="input-dropdown-addon"
+									title={requestObject.method}
+								>
+									{constants.HTTP_METHODS.map(method => (
+										<MenuItem  key={method} onSelect ={this.handleMethodChange} eventKey={method}>{method}</MenuItem>
+									))}
+								</DropdownButton>
+								<FormControl type="text"  ref="urlInput" value={this.props.requestObject.url} onChange = {this.handleUrlChange} />
+							</InputGroup>
+						</Col>
+						<SendButton fetchData = {fetchData} />
+					</FormGroup>
+				</form>
+			</div>
 		)
 	}
 }

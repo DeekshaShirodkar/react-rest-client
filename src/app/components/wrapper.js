@@ -59,10 +59,10 @@ class Wrapper extends React.Component {
 	}
 	render() {
 		return (
-			<div className="Container main-container">
-			    <UrlBar className="flex-column" {...this.props} fetchData={this.getResponse} handleUrlChange={this.handleUrlChange} handleMethodChange={this.props.handleMethodChange}/>
-				<RequestPane className="flex-column" {...this.props} />
-			    <ResponseView className="flex-column" response = {this.state.response}/>
+			<div className="container main-container">
+			    <UrlBar  {...this.props} fetchData={this.getResponse} handleUrlChange={this.handleUrlChange} handleMethodChange={this.props.handleMethodChange}/>
+				<RequestPane  {...this.props} />
+			    <ResponseView  response = {this.state.response}/>
 			</div>
 		)
 	}
