@@ -6,15 +6,11 @@ import ResponseView from './response-view.js';
 import axios from 'axios';
 import RequestPane from './request-pane.js';
 import { queryStringToJSON } from '../utils/request-utils.js';
+import * as fs from 'fs';
+import FormData, {getHeaders} from 'form-data'
 
 class Wrapper extends React.Component {
-	constructor(props) {
-		super(props);
-		
-		this.state ={
-            response: []
-		}
-	}
+	
 	getHeaders = (headers) => {
 		let header = {};
 		headers.forEach(element => {
@@ -22,27 +18,68 @@ class Wrapper extends React.Component {
 		});
 		return header;
 	}
+	getBodyData = () => {
+		let contentType = this.props.requestObject.headers.find(function (item) {
+			return item.name === "Content-Type"
+		})
+		console.log(contentType)
+		if(contentType.value === "application/x-www-form-urlencoded") {
+			let body = {}
+		    this.props.requestObject.urlEncodedForm.forEach(formData => {
+				if(formData) {
+					body[formData.name] = formData.value
+				}	
+			})
+			return body;
+		} else if (contentType.value === "multipart/form-data") {
+			console.log("multipart")
+			const formData = new FormData();
+			for (var i in this.props.requestObject.multipartForm) {
+				if(this.props.requestObject.multipartForm[i].type === "text"){
+					formData.append(this.props.requestObject.multipartForm[i].name, this.props.requestObject.multipartForm[i].value);
+				} else {
+					console.log("here")
+					console.log(this.props.requestObject.multipartForm[i])
+					formData.append(this.props.requestObject.multipartForm[i].name, this.props.requestObject.multipartForm[i].path);
+					console.log(formData);
+				}
+			}
+			formData.append("imgUploader", "D:\\banking-app-kendo\\src\\resources\\images\\veriskLogo.png");
+			return formData;
+		} else {
+			return JSON.parse(JSON.stringify(this.props.requestObject.rawBody))
+		}
+	}
 	getResponse = () => {
-		let body = `${JSON.stringify(this.props.requestObject.data)}`;
+		let body = this.props.requestObject.method === "GET"? "" : this.getBodyData();
 		let headers = this.getHeaders(this.props.requestObject.headers);
 		let config = {
 			url: `${this.props.requestObject.url}`,
 			method: `${this.props.requestObject.method}`,
-			headers: JSON.parse(headers),
-			data: JSON.parse(body),
+			headers: headers,
+			data: body,
 			json: true
-
 		}
 		console.log(config)
+		var startTime = (new Date()).getTime();
 		axios(config)
 			.then((response) => {
+				let timeTaken = (new Date()).getTime() - startTime;
+				console.log(timeTaken)
 			console.log(response)
-			this.setState({ response: response })
+				this.setResponse(response,timeTaken);
 		  });
 		
 
 	}
-
+	setResponse = (response,timeTaken) => {
+		let res = {};
+		res.data = response.data;
+		res.status = response.status;
+		res.statusText = response.statusText;
+		res.timeTaken = timeTaken;
+		this.props.updateResponseObject(res);
+	}
 	handleUrlChange = (e) => {
 		let inputUrl = e.target.value;
 		if(inputUrl.includes('?')){
@@ -62,7 +99,7 @@ class Wrapper extends React.Component {
 			<div className="container main-container">
 			    <UrlBar  {...this.props} fetchData={this.getResponse} handleUrlChange={this.handleUrlChange} handleMethodChange={this.props.handleMethodChange}/>
 				<RequestPane  {...this.props} />
-			    <ResponseView  response = {this.state.response}/>
+			    <ResponseView />
 			</div>
 		)
 	}
@@ -85,7 +122,12 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(action)
 		},
 		updateQueryParams : (queryString) =>{
-			const action = { type: "UPDATE_QUERY_PARAM", pairs:queryString}
+			const action = { type: "UPDATE_QUERY_PARAM", pairs:queryString }
+			dispatch(action)
+		},
+		updateResponseObject : (res) => {
+			console.log("updateResponseObject")
+			const action = { type: "UPDATE_RESPONSE_OBJECT", text: res}
 			dispatch(action)
 		}
 	}

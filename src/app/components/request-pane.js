@@ -49,15 +49,28 @@ class RequestPane extends React.Component {
                 }
             }  
             if(hasContentType) {    
-                this.props.updateHeaders(headers)
+                this.props.updateHeaders(headers);
                 return;
             } 
         } 
         headers.push(pairs);
-        this.props.updateHeaders(headers)
+        this.props.updateHeaders(headers);
         
         
     }
+
+    updateBodyParam = (value) => {
+        this.props.updateBody(value);
+    }
+    
+    updateUrlEncodedForm = (pairs) =>{
+        this.props.updateUrlEncodedForm(pairs);
+    }
+
+    updateMultipartForm = (pairs) => {
+        this.props.updateMultipartForm(pairs);
+    }
+
     handleSelect = (evt) => {
         var pairs = [];
         switch(evt) {
@@ -121,15 +134,19 @@ class RequestPane extends React.Component {
                             <KeyValueRenderer data={this.props.requestObject.headers} updateStore={this.updateHeaders}/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="Query">
-                            <KeyValueRenderer data={this.props.requestObject.queryParams} updateStore={this.updateQuery}/>
+                            <KeyValueRenderer data={this.props.requestObject.queryParams}  updateStore={this.updateQuery}/>
                         </Tab.Pane>
-                        <Tab.Pane eventKey="MultipartForm">Multipart Form content</Tab.Pane>
-                        <Tab.Pane eventKey="FormURLEncoded">Form URL Encoded content</Tab.Pane>
+                        <Tab.Pane eventKey="MultipartForm">
+                            <KeyValueRenderer data={this.props.requestObject.multipartForm}  updateStore={this.updateMultipartForm} isMultipartForm={true} />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="FormURLEncoded">
+                            <KeyValueRenderer data={this.props.requestObject.urlEncodedForm}  updateStore={this.updateUrlEncodedForm}/>
+                        </Tab.Pane>
                         <Tab.Pane eventKey="JSON">
-                            <BodyEditor mode = {"javascript"} />
+                            <BodyEditor mode = {"javascript"} updateBodyParam={this.updateBodyParam} />
                         </Tab.Pane>
                         <Tab.Pane eventKey="XML" >
-                            <BodyEditor mode = {"xml"} />
+                            <BodyEditor mode = {"xml"} updateBodyParam={this.updateBodyParam} />
                         </Tab.Pane>
                     </Tab.Content>
                     </Col>
@@ -158,7 +175,20 @@ const mapDispatchToProps = (dispatch) => {
         updateHeaders : (headers) => {
             const action = { type: "UPDATE_HEADERS", pairs:headers}
 			dispatch(action)
+        },
+        updateBody : (value) => {
+            const action = { type: "UPDATE_BODY", text:value}
+			dispatch(action)
+        },
+        updateUrlEncodedForm : (formData) => {
+            const action = { type: "UPDATE_URL_ENCODED_FORM_DATA" , pairs: formData}
+            dispatch(action)
+        },
+        updateMultipartForm : (formData) => {
+            const action = { type: "UPDATE_MULTIPART_FORM_DATA" , pairs: formData}
+            dispatch(action)
         }
+
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RequestPane); 

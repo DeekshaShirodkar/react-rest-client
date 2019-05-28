@@ -5,26 +5,12 @@ const initialState = {
         method: 'GET',
         url: '',
         headers: [],
-        data: {
-            "id": 0,
-            "category": {
-            "id": 0,
-            "name": "string"
-            },
-            "name": "doggie",
-            "photoUrls": [
-            "string"
-            ],
-            "tags": [
-            {
-                "id": 0,
-                "name": "string"
-            }
-            ],
-            "status": "available"
-        },
+        rawBody: {},
+        urlEncodedForm: [],
+        multipartForm: [],
         queryParams :  []
-    }
+    },
+    response: {}
 }
 
 const reducer = (state = initialState, action) => {
@@ -56,8 +42,6 @@ const reducer = (state = initialState, action) => {
                 } 
             })
         case 'UPDATE_HEADERS' :
-            console.log("reducer")
-            console.log(action.pairs)
             return Object.assign({}, state, {
                 ...state,
                 request: {
@@ -65,6 +49,35 @@ const reducer = (state = initialState, action) => {
                     headers: action.pairs
                 } 
             })
+        case 'UPDATE_BODY' : 
+            return Object.assign({}, state, {
+                ...state,
+                request: {
+                    ...state.request,
+                    rawBody: action.text
+                } 
+            })
+        case 'UPDATE_RESPONSE_OBJECT' :
+            return  Object.assign({}, state , { 
+                ...state,
+                response: action.text
+            })
+        case 'UPDATE_URL_ENCODED_FORM_DATA' :
+            return Object.assign({}, state, {
+                ...state,
+                request: {
+                    ...state.request,
+                    urlEncodedForm: action.pairs
+                } 
+            })
+        case 'UPDATE_MULTIPART_FORM_DATA' :
+        return Object.assign({}, state, {
+            ...state,
+            request: {
+                ...state.request,
+                multipartForm: action.pairs
+            } 
+        })
         default :
             return state;
     }

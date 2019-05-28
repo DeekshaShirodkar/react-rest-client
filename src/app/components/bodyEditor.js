@@ -25,7 +25,8 @@ class BodyEditor extends React.Component {
 	updateCode = (newCode) => {
 		this.setState({
 			code: newCode
-		});
+        });
+        this.props.updateBodyParam(this.state.code)
 	}
 	render () {
 		var options = {

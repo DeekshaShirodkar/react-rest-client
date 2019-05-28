@@ -40,3 +40,24 @@ body, html,#root {
 .x-body-containter {
   margin-top: 10px;
 }
+
+.x-response {
+  border-top: 1px ridge grey;
+}
+
+.x-badge {
+  height: 26px;
+  font-size: 12px;
+  font-weight: 400;
+  align-items: center;
+  display: inline-flex;
+  margin-right: 15px;
+  padding:5px 10px;
+  border:1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.bg-success {
+  background-color: greenyellow;
+  color: rgba(255,255,255, 0.9);
+}
