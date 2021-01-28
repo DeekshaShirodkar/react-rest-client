@@ -5,7 +5,7 @@
   "main": "main.js",
   "devDependencies": {
     "@types/codemirror": "0.0.72",
-    "electron": "^2.0.7",
+    "electron": "^9.4.0",
     "react-scripts": "0.8.5"
   },
   "dependencies": {
