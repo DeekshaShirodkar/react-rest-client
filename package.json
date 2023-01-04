@@ -6,7 +6,7 @@
   "devDependencies": {
     "@types/codemirror": "0.0.72",
     "electron": "^2.0.7",
-    "react-scripts": "0.8.5"
+    "react-scripts": "5.0.1"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -22,7 +22,7 @@
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
-    "react-scripts": "1.1.4",
+    "react-scripts": "5.0.1",
     "redux": "^4.0.1"
   },
   "scripts": {
